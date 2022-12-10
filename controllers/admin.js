@@ -32,7 +32,7 @@ exports.login = async (req, res, next) => {
   if (body) {
     try {
       const user = await User.findOne({ where: { email: body.email } });
-      console.log(user);
+      
       if (user) {
         if (user.password === body.password) {
           if (user.role === "ADMIN") {
