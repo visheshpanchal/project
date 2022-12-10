@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Register</title>
+  </head>
+  <body>
+    <form id="register-form">
+      <div>
+        <label>First Name</label>
+        <input type="text" name="firstName" id="first-name" />
+      </div>
+      <div>
+        <label>Last Name</label>
+        <input type="text" name="lastName" id="last-name" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" name="email" id="email" />
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" name="password" id="password" />
+      </div>
+      <div>
+        <label>Password Repeat</label>
+        <input type="password" name="rpassword" id="r-password" />
+      </div>
+      <div>
+        <button>Submit</button>
+      </div>
+    </form>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./base.js"></script>
+    <script>
+      const myForm = document.getElementById("register-form");
+      myForm.addEventListener("submit", register);
+
+      async function register(event) {
+        event.preventDefault();
+
+        let form = new FormData(myForm);
+        let obj = {};
+        for (const [key, value] of form) {
+          obj[key] = value;
+        }
+        if (obj["rpassword"] !== obj["password"]) {
+          alert("Password not matching");
+          location.reload();
+        } else {
+          try {
+            const res = await axios({
+              method: "post",
+              url: BASE_URL + "admin/register",
+              data: obj,
+            });
+
+            if (res.data.status === "success") {
+              alert("Register Done");
+            } else {
+              alert("Problem in input field.");
+            }
+          } catch (err) {
+            alert(err.response.data.message)
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
